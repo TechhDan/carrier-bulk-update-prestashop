@@ -1,0 +1,60 @@
+version: "3"
+
+services:
+  mysql:
+    image: mysql/mysql-server:5.7
+    restart: always
+    ports:
+      - 3307:3306
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=1
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWD}
+      - MYSQL_DATABASE=${DB_NAME}
+
+  prestashop_1.6:
+    image: prestashop/prestashop:1.6
+    depends_on:
+      - mysql
+    ports:
+      - 8080:80
+    volumes:
+      - .:/var/www/html/modules/${PS_MODULE_NAME}
+    environment:
+      - DB_SERVER=mysql
+      - DB_PREFIX=ps16_
+      - PS_INSTALL_AUTO=1
+      - DB_USER=${DB_USER}
+      - DB_PASSWD=${DB_PASSWD}
+      - DB_NAME=${DB_NAME}
+      - PS_FOLDER_ADMIN=${PS_FOLDER_ADMIN}
+      - PS_DOMAIN=${PS_DOMAIN}:8080
+      - PS_LANGUAGE=${PS_LANGUAGE}
+      - PS_COUNTRY=${PS_COUNTRY}
+      - PS_FOLDER_INSTALL=installed_remove
+      - PS_DEV_MODE=${PS_DEV_MODE}
+      - ADMIN_MAIL=${ADMIN_MAIL}
+      - ADMIN_PASSWD=${ADMIN_PASSWD}
+
+  prestashop_1.7:
+    image: prestashop/prestashop:1.7
+    depends_on:
+      - mysql
+    ports:
+      - 8081:80
+    volumes:
+      - .:/var/www/html/modules/${PS_MODULE_NAME}
+    environment:
+      - DB_SERVER=mysql
+      - DB_PREFIX=ps17_
+      - PS_INSTALL_AUTO=1
+      - DB_USER=${DB_USER}
+      - DB_PASSWD=${DB_PASSWD}
+      - DB_NAME=${DB_NAME}
+      - PS_FOLDER_ADMIN=${PS_FOLDER_ADMIN}
+      - PS_DOMAIN=${PS_DOMAIN}:8081
+      - PS_LANGUAGE=${PS_LANGUAGE}
+      - PS_COUNTRY=${PS_COUNTRY}
+      - PS_FOLDER_INSTALL=installed_remove
+      - ADMIN_MAIL=${ADMIN_MAIL}
+      - ADMIN_PASSWD=${ADMIN_PASSWD}
